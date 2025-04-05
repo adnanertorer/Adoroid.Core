@@ -1,0 +1,1 @@
+# Adoroid.Core
