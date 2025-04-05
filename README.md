@@ -80,7 +80,7 @@ internal class UserRepository : RepositoryBase<User, int, ExampleDbContext>, IUs
 }
 
 
-🤝 Katkıda Bulunma
-Katkılarınızı memnuniyetle karşılıyoruz! Lütfen bir issue açarak öneride bulunabilir veya doğrudan pull request göndererek katkı sağlayabilirsiniz.
+🤝 Contributing
+Contributions are welcome! Feel free to open an issue or submit a pull request.
 
 
