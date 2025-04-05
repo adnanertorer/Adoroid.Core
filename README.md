@@ -1,31 +1,30 @@
 # Adoroid.Core
 
-**Adoroid.Core**, .NET projelerinde sıkça ihtiyaç duyulan temel altyapı bileşenlerini sağlayan modüler bir çekirdek kütüphanedir. Projelerine kolayca entegre edilebilir ve geliştirici deneyimini iyileştirir.
+**Adoroid.Core** is a modular .NET Core library that brings together essential infrastructure components commonly used across backend projects. It's designed to be reusable, extendable, and easy to integrate into your applications.
 
 ---
 
-## ✨ Özellikler
+## ✨ Features
 
-- **✅ Validationlar**: FluentValidation ile entegre, kolay doğrulama mekanizmaları.
-- **🚨 Exception Handlerlar**: Merkezi hata yönetimi için middleware altyapısı.
-- **🧩 Pipeline'lar**: MediatR pipeline behavior desteği ile genişletilebilir mimari.
-- **📥 Request / 📤 Response Modelleri**: CQRS desenine uygun nesneler.
-- **🧠 Generic Repository**: Entity bazlı genel CRUD işlemleri.
-- **🔍 Dynamic LINQ**: Dinamik sorgular oluşturmak için yardımcı extension'lar.
-- **📄 Paging**: Sayfalama işlemleri için hazır metodlar.
+- ✅ Request validation using [FluentValidation](https://fluentvalidation.net/)
+- 🔁 MediatR pipeline behaviors
+- 🚨 Centralized exception handling middleware
+- 🧠 Generic repository pattern
+- 🔍 Dynamic LINQ query helpers
+- 📄 Built-in pagination support
 
 ---
 
-## 🚀 Kurulum
+## 🚀 Installation
 
-NuGet üzerinden yüklemek için:
+You can install the packages via NuGet:
 
 ```bash
 dotnet add package Adoroid.Core.Repository
 dotnet add package Adoroid.Core.Application
 
-⚙️ Kullanım Örnekleri
-1. Pipeline, Validation ve Business Rule Setup'ı
+⚙️ Usage Examples
+1. Registering Pipeline Behaviors and Validations
 
 using FluentValidation;
 using Adoroid.Core.Application.Pipelines.Validation;
@@ -53,9 +52,10 @@ public static class ExampleServiceApplicationServiceCollection
     }
 }
 
-2. Generic Repository Kullanımı
+2. Generic Repository Usage
 
-Entity Tanımı
+Entity
+
 public class User : Entity<long>
 {
     public required string Username { get; set; }
@@ -68,6 +68,7 @@ public class User : Entity<long>
 }
 
 Repository Interface
+
 public interface IUserRepository : IAsyncRepository<User, int>
 {
 }
