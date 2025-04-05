@@ -5,9 +5,13 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackageId>Adoroid.Core.Repository</PackageId>
-    <Version>1.1.1</Version>
+    <Version>1.0.0</Version>
     <Authors>Adnan Ertorer</Authors>
-    <Company>Ideal Sigorta</Company>
+    <Company>Adoroid</Company>
+    <Description>.NET projeleri için temel çekirdek kütüphane.</Description>
+    <PackageTags>Validation;CQRS;Repository;MediatR;LINQ;Paging</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/adnanertorer/Adoroid.Core</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
