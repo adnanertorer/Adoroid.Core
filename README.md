@@ -21,7 +21,8 @@
 NuGet üzerinden yüklemek için:
 
 ```bash
-dotnet add package Adoroid.Core
+dotnet add package Adoroid.Core.Repository
+dotnet add package Adoroid.Core.Application
 
 ⚙️ Kullanım Örnekleri
 1. Pipeline, Validation ve Business Rule Setup'ı
