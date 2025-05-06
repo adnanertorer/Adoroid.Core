@@ -1,6 +1,6 @@
 ﻿using Adoroid.Core.Application.Exceptions.Models;
 using FluentValidation;
-using MediatR;
+using MinimalMediatR.Core;
 using Types_ValidationException = Adoroid.Core.Application.Exceptions.Types.ValidationException;
 using ValidationException = Adoroid.Core.Application.Exceptions.Types.ValidationException;
 
@@ -11,7 +11,7 @@ public class RequestValidationBehavior<TRequest, TResponse>(IEnumerable<IValidat
 {
     private readonly IEnumerable<IValidator<TRequest>> _validators = validators;
 
-    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+    public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, Func<Task<TResponse>> next)
     {
         ValidationContext<object> validationContext = new(request);
 
