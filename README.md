@@ -29,7 +29,8 @@ dotnet add package Adoroid.Core.Application
 using FluentValidation;
 using Adoroid.Core.Application.Pipelines.Validation;
 using Adoroid.Core.Application.Rules;
-using MediatR;
+using MinimalMediatR.Behaviors;
+using MinimalMediatR.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
@@ -40,13 +41,8 @@ public static class ExampleServiceApplicationServiceCollection
     {
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddSubClassesOfType(Assembly.GetExecutingAssembly(), type: typeof(BaseBusinessRule));
-       
-        services.AddMediatR(configuration =>
-        {
-            configuration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
-            configuration.AddBehavior(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
-        });
-
+        services.AddMinimalMediatR(Assembly.GetExecutingAssembly());
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         return services;
     }
