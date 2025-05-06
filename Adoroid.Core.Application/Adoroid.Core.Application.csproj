@@ -8,7 +8,8 @@
     <Version>1.0.0</Version>
     <Authors>Adnan Ertorer</Authors>
     <Company>Adoroid</Company>
-    <Description>.NET projeleri için temel çekirdek kütüphane.</Description>
+    <Description>Adoroid.Core is a modular .NET Core library that brings together essential infrastructure components commonly 
+    used across backend projects. It's designed to be reusable, extendable, and easy to integrate into your applications.</Description>
     <PackageTags>Validation;CQRS;Repository;MediatR;LINQ;Paging</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/adnanertorer/Adoroid.Core</RepositoryUrl>
@@ -16,8 +17,8 @@
 
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="11.11.0" />
-    <PackageReference Include="MediatR" Version="12.4.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.0" />
+    <PackageReference Include="MinimalMediatR" Version="1.0.3" />
   </ItemGroup>
 
 </Project>
