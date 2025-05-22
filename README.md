@@ -92,7 +92,7 @@ internal class UserRepository : RepositoryBase<User, int, ExampleDbContext>, IUs
 
 return Response<CompanyModel>.Fail(BusinessMessages.CompanyIsAlreadyExists);
 or
- return Response<CompanyModel>.Success(resultEntity.ToModel());
+return Response<CompanyModel>.Success(resultEntity.ToModel());
 
 
 🤝 Contributing
