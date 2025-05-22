@@ -6,12 +6,13 @@
 
 ## ✨ Features
 
-- ✅ Request validation using [FluentValidation](https://fluentvalidation.net/)
-- 🔁 MediatR pipeline behaviors
-- 🚨 Centralized exception handling middleware
-- 🧠 Generic repository pattern
-- 🔍 Dynamic LINQ query helpers
-- 📄 Built-in pagination support
+- Request validation using [FluentValidation](https://fluentvalidation.net/)
+- MinimalMediatR pipeline behaviors
+- Centralized exception handling middleware
+- Generic repository pattern
+- Dynamic LINQ query helpers
+- Built-in pagination support
+- Response Pattern support
 
 ---
 
@@ -86,6 +87,12 @@ internal class UserRepository : RepositoryBase<User, int, ExampleDbContext>, IUs
 {
     public UserRepository(ExampleDbContext context) : base(context) { }
 }
+
+3. Reponse Pattern Usage
+
+return Response<CompanyModel>.Fail(BusinessMessages.CompanyIsAlreadyExists);
+or
+ return Response<CompanyModel>.Success(resultEntity.ToModel());
 
 
 🤝 Contributing
