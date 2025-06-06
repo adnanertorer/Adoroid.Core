@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackageId>Adoroid.Core.Repository</PackageId>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
     <Authors>Adnan Ertorer</Authors>
     <Company>Adoroid</Company>
     <Description>Adoroid.Core is a modular .NET Core library that brings together essential infrastructure components commonly 

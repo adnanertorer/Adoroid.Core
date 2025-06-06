@@ -22,7 +22,7 @@ public class RepositoryBase<TEntity, TEntityId, TContext> : IAsyncRepository<TEn
         CancellationToken cancellationToken = default)
     {
         var queryable = Query();
-        if (!enableTracking)
+        if (enableTracking)
             queryable = queryable.AsNoTracking();
         if (include != null)
             queryable = include(queryable);
@@ -35,7 +35,7 @@ public class RepositoryBase<TEntity, TEntityId, TContext> : IAsyncRepository<TEn
         int size = 10, bool withDeleted = false, bool enableTracking = true, CancellationToken cancellationToken = default)
     {
         var queryable = Query();
-        if (!enableTracking)
+        if (enableTracking)
             queryable = queryable.AsNoTracking();
         if (include != null)
             queryable = include(queryable);
@@ -53,7 +53,7 @@ public class RepositoryBase<TEntity, TEntityId, TContext> : IAsyncRepository<TEn
         CancellationToken cancellationToken = default)
     {
         var queryable = Query().ToDynamic(dynamicQuery);
-        if (!enableTracking)
+        if (enableTracking)
             queryable = queryable.AsNoTracking();
         if (include != null)
             queryable = include(queryable);
@@ -70,7 +70,7 @@ public class RepositoryBase<TEntity, TEntityId, TContext> : IAsyncRepository<TEn
         CancellationToken cancellationToken = default)
     {
         var queryable = Query();
-        if (!enableTracking)
+        if (enableTracking)
             queryable = queryable.AsNoTracking();
         if (withDeleted)
             queryable = queryable.IgnoreQueryFilters();
@@ -131,7 +131,7 @@ public class RepositoryBase<TEntity, TEntityId, TContext> : IAsyncRepository<TEn
         CancellationToken cancellationToken = default)
     {
         var queryable = Query();
-        if (!enableTracking)
+        if (enableTracking)
             queryable = queryable.AsNoTracking();
         if (include != null)
             queryable = include(queryable);
@@ -144,7 +144,7 @@ public class RepositoryBase<TEntity, TEntityId, TContext> : IAsyncRepository<TEn
         bool withDeleted = false, bool enableTracking = true, CancellationToken cancellationToken = default)
     {
         var queryable = Query();
-        if (!enableTracking)
+        if (enableTracking)
             queryable = queryable.AsNoTracking();
         if (include != null)
             queryable = include(queryable);
@@ -162,7 +162,7 @@ public class RepositoryBase<TEntity, TEntityId, TContext> : IAsyncRepository<TEn
         CancellationToken cancellationToken = default)
     {
         var queryable = Query().ToDynamic(dynamicQuery);
-        if (!enableTracking)
+        if (enableTracking)
             queryable = queryable.AsNoTracking();
         if (include != null)
             queryable = include(queryable);
@@ -179,7 +179,7 @@ public class RepositoryBase<TEntity, TEntityId, TContext> : IAsyncRepository<TEn
         CancellationToken cancellationToken = default)
     {
         var queryable = Query();
-        if (!enableTracking)
+        if (enableTracking)
             queryable = queryable.AsNoTracking();
         if (withDeleted)
             queryable = queryable.IgnoreQueryFilters();
@@ -224,12 +224,40 @@ public class RepositoryBase<TEntity, TEntityId, TContext> : IAsyncRepository<TEn
 
     public TEntity Delete(TEntity entity, bool permanent = false)
     {
-        throw new NotImplementedException();
+        if (permanent)
+        {
+            Context.Remove(entity);
+        }
+        else
+        {
+            entity.IsDeleted = true;
+            entity.DeletedDate = DateTime.UtcNow;
+            Context.Update(entity);
+        }
+        Context.SaveChanges();
+        return entity;
     }
 
     public ICollection<TEntity> DeleteRange(ICollection<TEntity> entities, bool permanent = false)
     {
-        throw new NotImplementedException();
+        if (permanent)
+        {
+            foreach (var tEntity in entities)
+            {
+                Context.Remove(tEntity);
+            }
+        }
+        else
+        {
+            foreach (var tEntity in entities)
+            {
+                tEntity.DeletedDate = DateTime.UtcNow;
+                tEntity.IsDeleted = true;
+            }
+            Context.UpdateRange(entities);
+        }
+        Context.SaveChanges();
+        return entities;
     }
 
     protected async Task SetEntityDeletedAsync(TEntity entity, bool permanent)
