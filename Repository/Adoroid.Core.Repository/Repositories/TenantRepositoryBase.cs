@@ -14,9 +14,9 @@ namespace Adoroid.Core.Repository.Repositories;
 public class TenantRepositoryBase<TEntity, TEntityId, TContext, TTenantId> : IAsyncTenantRepository<TEntity, TEntityId>, ITenantRepository<TEntity, TEntityId>
  where TEntity : TenantEntity<TEntityId> where TContext : DbContext
 {
-    protected readonly TContext Context;
-    protected readonly ICurrentUserProvider CurrentUserProvider;
-    protected readonly ICurrentTenantProvider<TTenantId> CurrentTenantProvider;
+    private readonly TContext Context;
+    private readonly ICurrentUserProvider CurrentUserProvider;
+    private readonly ICurrentTenantProvider<TTenantId> CurrentTenantProvider;
 
 
     public TenantRepositoryBase(TContext context, ICurrentUserProvider currentUserProvider, ICurrentTenantProvider<TTenantId> currentTenantProvider)
@@ -91,7 +91,8 @@ public class TenantRepositoryBase<TEntity, TEntityId, TContext, TTenantId> : IAs
 
     public async Task<TEntity> AddAsync(TEntity entity)
     {
-        entity.SetAuditCreated(DateTimeOffset.UtcNow, entity.CreatedBy);
+        entity.SetAuditCreated(DateTimeOffset.UtcNow, CurrentUserProvider.UserId);
+        Context.Entry(entity).Property(nameof(TenantEntity<TEntityId>.TenantId)).CurrentValue = CurrentTenantProvider.TenantId;
         await Context.AddAsync(entity);
         await Context.SaveChangesAsync();
         return entity;
@@ -100,7 +101,10 @@ public class TenantRepositoryBase<TEntity, TEntityId, TContext, TTenantId> : IAs
     public async Task<ICollection<TEntity>> AddRangeAsync(ICollection<TEntity> entities)
     {
         foreach (var tEntity in entities)
-            tEntity.SetAuditCreated(DateTimeOffset.UtcNow, tEntity.CreatedBy);
+        {
+            tEntity.SetAuditCreated(DateTimeOffset.UtcNow, CurrentUserProvider.UserId);
+            Context.Entry(tEntity).Property(nameof(TenantEntity<TEntityId>.TenantId)).CurrentValue = CurrentTenantProvider.TenantId;
+        }
 
         await Context.AddRangeAsync(entities);
         await Context.SaveChangesAsync();
@@ -109,7 +113,7 @@ public class TenantRepositoryBase<TEntity, TEntityId, TContext, TTenantId> : IAs
 
     public async Task<TEntity> UpdateAsync(TEntity entity)
     {
-        entity.SetAuditUpdated(DateTimeOffset.UtcNow, entity.CreatedBy);
+        entity.SetAuditUpdated(DateTimeOffset.UtcNow, CurrentUserProvider.UserId);
         Context.Update(entity);
         await Context.SaveChangesAsync();
         return entity;
@@ -118,7 +122,7 @@ public class TenantRepositoryBase<TEntity, TEntityId, TContext, TTenantId> : IAs
     public async Task<ICollection<TEntity>> UpdateRangeAsync(ICollection<TEntity> entities)
     {
         foreach (var tEntity in entities)
-            tEntity.SetAuditUpdated(DateTimeOffset.UtcNow, tEntity.CreatedBy);
+            tEntity.SetAuditUpdated(DateTimeOffset.UtcNow, CurrentUserProvider.UserId);
 
         Context.UpdateRange(entities);
         await Context.SaveChangesAsync();
