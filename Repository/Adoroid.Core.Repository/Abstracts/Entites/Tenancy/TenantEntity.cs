@@ -1,4 +1,4 @@
-﻿namespace Adoroid.Core.Repository.Repositories;
+﻿namespace Adoroid.Core.Repository.Abstracts.Entites.Tenancy;
 
 public abstract class TenantEntity<TId> : SoftDeletableEntity<TId>
 {

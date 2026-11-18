@@ -6,6 +6,9 @@ using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
 using Adoroid.Core.Repository.Dynamics;
 using Adoroid.Core.Repository.Paging;
+using Adoroid.Core.Repository.Abstracts;
+using Adoroid.Core.Repository.Contracts;
+using Adoroid.Core.Repository.Abstracts.Entites;
 
 namespace Adoroid.Core.Repository.Repositories;
 

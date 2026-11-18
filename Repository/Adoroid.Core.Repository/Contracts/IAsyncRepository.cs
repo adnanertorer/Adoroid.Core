@@ -2,8 +2,9 @@
 using System.Linq.Expressions;
 using Adoroid.Core.Repository.Dynamics;
 using Adoroid.Core.Repository.Paging;
+using Adoroid.Core.Repository.Abstracts;
 
-namespace Adoroid.Core.Repository.Repositories;
+namespace Adoroid.Core.Repository.Contracts;
 
 public interface IAsyncRepository<TEntity, TEntityId> : IQuery<TEntity> where TEntity : Entity<TEntityId>
 {
