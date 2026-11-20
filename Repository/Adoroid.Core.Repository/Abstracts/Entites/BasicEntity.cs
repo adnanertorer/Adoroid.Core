@@ -6,9 +6,6 @@ public abstract class BasicEntity<TId>
 
     public BasicEntity()
     {
-        if(Id is null)
-            throw new ArgumentNullException(nameof(Id), "Id cannot be null.");
-
         Id = default!;
     }
 

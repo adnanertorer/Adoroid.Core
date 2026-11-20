@@ -6,13 +6,15 @@ using System.Linq.Expressions;
 
 namespace Adoroid.Core.Repository.Contracts;
 
-public interface IAsyncTenantRepository<TEntity, TEntityId> : IQuery<TEntity> where TEntity : TenantEntity<TEntityId>
+public interface IAsyncTenantRepository<TEntity, TEntityId, TTenantId> : IQuery<TEntity>
+    where TEntity : TenantEntity<TEntityId, TTenantId>
 {
     Task<TEntity?> GetAsync(
         Expression<Func<TEntity, bool>> predicate,
         Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
         bool withDeleted = false,
-        bool enableTracking = true, CancellationToken cancellationToken = default);
+        bool enableTracking = true,
+        CancellationToken cancellationToken = default);
 
     Task<Paginate<TEntity>> GetListAsync(
         Expression<Func<TEntity, bool>>? predicate = null,
@@ -22,8 +24,7 @@ public interface IAsyncTenantRepository<TEntity, TEntityId> : IQuery<TEntity> wh
         int size = 10,
         bool withDeleted = false,
         bool enableTracking = true,
-        CancellationToken cancellationToken = default
-    );
+        CancellationToken cancellationToken = default);
 
     Task<Paginate<TEntity>> GetListByDynamicAsync(
         DynamicQuery dynamicQuery,
@@ -33,17 +34,20 @@ public interface IAsyncTenantRepository<TEntity, TEntityId> : IQuery<TEntity> wh
         int index = 0,
         int size = 10,
         bool withDeleted = false,
-        bool enableTracking = true, CancellationToken cancellationToken = default);
+        bool enableTracking = true,
+        CancellationToken cancellationToken = default);
 
     Task<bool> AnyAsync(
         Expression<Func<TEntity, bool>>? predicate = null,
         bool withDeleted = false,
-        bool enableTracking = true, CancellationToken cancellationToken = default);
+        bool enableTracking = true,
+        CancellationToken cancellationToken = default);
 
-    Task<TEntity> AddAsync(TEntity entity);
-    Task<ICollection<TEntity>> AddRangeAsync(ICollection<TEntity> entities);
-    Task<TEntity> UpdateAsync(TEntity entity);
-    Task<ICollection<TEntity>> UpdateRangeAsync(ICollection<TEntity> entities);
-    Task<TEntity> DeleteAsync(TEntity entity, bool permanent = false);
-    Task<ICollection<TEntity>> DeleteRangeAsync(ICollection<TEntity> entities, bool permanent = false);
+    // Yazma metotları SaveChanges çağırmaz; kaydetme unit of work / DbContext üzerinden yapılır.
+    Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = default);
+    Task<ICollection<TEntity>> AddRangeAsync(ICollection<TEntity> entities, CancellationToken cancellationToken = default);
+    Task<TEntity> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default);
+    Task<ICollection<TEntity>> UpdateRangeAsync(ICollection<TEntity> entities, CancellationToken cancellationToken = default);
+    Task<TEntity> DeleteAsync(TEntity entity, bool permanent = false, CancellationToken cancellationToken = default);
+    Task<ICollection<TEntity>> DeleteRangeAsync(ICollection<TEntity> entities, bool permanent = false, CancellationToken cancellationToken = default);
 }
