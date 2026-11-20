@@ -1,4 +1,6 @@
-﻿namespace Adoroid.Core.Repository.Repositories;
+﻿using Adoroid.Core.Repository.Abstracts.Entites;
+
+namespace Adoroid.Core.Repository.Abstracts;
 
 public class Entity<TId> : IEntityTimestamps
 {

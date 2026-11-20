@@ -1,4 +1,4 @@
-﻿namespace Adoroid.Core.Repository.Repositories;
+﻿namespace Adoroid.Core.Repository.Contracts;
 
 public interface IQuery<T>
 {

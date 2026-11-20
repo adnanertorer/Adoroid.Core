@@ -6,6 +6,9 @@ using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
 using Adoroid.Core.Repository.Dynamics;
 using Adoroid.Core.Repository.Paging;
+using Adoroid.Core.Repository.Abstracts;
+using Adoroid.Core.Repository.Contracts;
+using Adoroid.Core.Repository.Abstracts.Entites;
 
 namespace Adoroid.Core.Repository.Repositories;
 
@@ -22,7 +25,7 @@ public class RepositoryBase<TEntity, TEntityId, TContext> : IAsyncRepository<TEn
         CancellationToken cancellationToken = default)
     {
         var queryable = Query();
-        if (enableTracking)
+        if (!enableTracking)
             queryable = queryable.AsNoTracking();
         if (include != null)
             queryable = include(queryable);
@@ -35,7 +38,7 @@ public class RepositoryBase<TEntity, TEntityId, TContext> : IAsyncRepository<TEn
         int size = 10, bool withDeleted = false, bool enableTracking = true, CancellationToken cancellationToken = default)
     {
         var queryable = Query();
-        if (enableTracking)
+        if (!enableTracking)
             queryable = queryable.AsNoTracking();
         if (include != null)
             queryable = include(queryable);
@@ -53,7 +56,7 @@ public class RepositoryBase<TEntity, TEntityId, TContext> : IAsyncRepository<TEn
         CancellationToken cancellationToken = default)
     {
         var queryable = Query().ToDynamic(dynamicQuery);
-        if (enableTracking)
+        if (!enableTracking)
             queryable = queryable.AsNoTracking();
         if (include != null)
             queryable = include(queryable);
@@ -70,7 +73,7 @@ public class RepositoryBase<TEntity, TEntityId, TContext> : IAsyncRepository<TEn
         CancellationToken cancellationToken = default)
     {
         var queryable = Query();
-        if (enableTracking)
+        if (!enableTracking)
             queryable = queryable.AsNoTracking();
         if (withDeleted)
             queryable = queryable.IgnoreQueryFilters();
@@ -131,7 +134,7 @@ public class RepositoryBase<TEntity, TEntityId, TContext> : IAsyncRepository<TEn
         CancellationToken cancellationToken = default)
     {
         var queryable = Query();
-        if (enableTracking)
+        if (!enableTracking)
             queryable = queryable.AsNoTracking();
         if (include != null)
             queryable = include(queryable);
@@ -144,7 +147,7 @@ public class RepositoryBase<TEntity, TEntityId, TContext> : IAsyncRepository<TEn
         bool withDeleted = false, bool enableTracking = true, CancellationToken cancellationToken = default)
     {
         var queryable = Query();
-        if (enableTracking)
+        if (!enableTracking)
             queryable = queryable.AsNoTracking();
         if (include != null)
             queryable = include(queryable);
@@ -162,7 +165,7 @@ public class RepositoryBase<TEntity, TEntityId, TContext> : IAsyncRepository<TEn
         CancellationToken cancellationToken = default)
     {
         var queryable = Query().ToDynamic(dynamicQuery);
-        if (enableTracking)
+        if (!enableTracking)
             queryable = queryable.AsNoTracking();
         if (include != null)
             queryable = include(queryable);
@@ -179,7 +182,7 @@ public class RepositoryBase<TEntity, TEntityId, TContext> : IAsyncRepository<TEn
         CancellationToken cancellationToken = default)
     {
         var queryable = Query();
-        if (enableTracking)
+        if (!enableTracking)
             queryable = queryable.AsNoTracking();
         if (withDeleted)
             queryable = queryable.IgnoreQueryFilters();
@@ -310,7 +313,7 @@ public class RepositoryBase<TEntity, TEntityId, TContext> : IAsyncRepository<TEn
                 if (navValue == null)
                 {
                     var query = Context.Entry(entity).Collection(navigation.PropertyInfo.Name).Query();
-                    navValue = await GetRelationLoaderQuery(query, navigationPropertyType: navigation.PropertyInfo.GetType()).ToListAsync();
+                    navValue = await GetRelationLoaderQuery(query, navigationPropertyType: navigation.TargetEntityType.ClrType).ToListAsync();
                     if (navValue == null)
                         continue;
                 }
@@ -323,7 +326,7 @@ public class RepositoryBase<TEntity, TEntityId, TContext> : IAsyncRepository<TEn
                 if (navValue == null)
                 {
                     var query = Context.Entry(entity).Reference(navigation.PropertyInfo.Name).Query();
-                    navValue = await GetRelationLoaderQuery(query, navigationPropertyType: navigation.PropertyInfo.GetType())
+                    navValue = await GetRelationLoaderQuery(query, navigationPropertyType: navigation.TargetEntityType.ClrType)
                         .FirstOrDefaultAsync();
                     if (navValue == null)
                         continue;
@@ -350,14 +353,8 @@ public class RepositoryBase<TEntity, TEntityId, TContext> : IAsyncRepository<TEn
 
     protected async Task SetEntityAsDeletedAsync(IEnumerable<TEntity> entities, bool permanent)
     {
-        var enumerable = entities as TEntity[] ?? entities.ToArray();
-        foreach (var entity in enumerable)
-        {
-            entity.DeletedDate = DateTime.UtcNow;
-            entity.IsDeleted = true;
-        }
-            
-        await SetEntityAsDeletedAsync(enumerable, permanent);
+        foreach (var entity in entities)
+            await SetEntityDeletedAsync(entity, permanent);
     }
 
 }
