@@ -1,23 +1,23 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackageId>Adoroid.Core.Repository</PackageId>
-    <Version>1.0.2</Version>
+    <Version>2.0.0</Version>
     <Authors>Adnan Ertorer</Authors>
     <Company>Adoroid</Company>
     <Description>Adoroid.Core is a modular .NET Core library that brings together essential infrastructure components commonly 
     used across backend projects. It's designed to be reusable, extendable, and easy to integrate into your applications.</Description>
-    <PackageTags>Validation;CQRS;Repository;MediatR;LINQ;Paging</PackageTags>
+    <PackageTags>Validation;CQRS;Repository;MediatR;LINQ;Paging;Tenancy</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/adnanertorer/Adoroid.Core</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.1" />
-    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.6.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.15" />
+    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.7.4" />
   </ItemGroup>
 
 </Project>
